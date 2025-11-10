@@ -1,4 +1,4 @@
-import { boolean, index, integer, pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
+import { boolean, integer, pgTable, primaryKey, varchar } from "drizzle-orm/pg-core";
 import { createdAt, updatedAt } from "../schemaHelpers";
 import { UserTable } from "./user";
 import { OrganisationTable } from "./organisation";
