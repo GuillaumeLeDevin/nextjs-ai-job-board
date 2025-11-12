@@ -1,6 +1,7 @@
 import { pgTable, varchar } from "drizzle-orm/pg-core";
 import { UserTable } from "./user";
 import { createdAt, updatedAt } from "../schemaHelpers";
+import { relations } from "drizzle-orm/relations";
 
 export const userResumeTable = pgTable("user_resumes", {
     userId: varchar()
@@ -12,3 +13,10 @@ export const userResumeTable = pgTable("user_resumes", {
     createdAt,
     updatedAt,
 });
+
+export const userResumeRelations = relations(userResumeTable, ({ one }) => ({
+    user: one(UserTable, {
+        fields: [userResumeTable.userId],
+        references: [UserTable.id],
+    }),
+}));

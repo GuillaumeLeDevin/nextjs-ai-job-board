@@ -2,6 +2,7 @@ import { boolean, integer, pgTable, primaryKey, varchar } from "drizzle-orm/pg-c
 import { createdAt, updatedAt } from "../schemaHelpers";
 import { UserTable } from "./user";
 import { OrganisationTable } from "./organisation";
+import { relations } from "drizzle-orm/relations";
 
 export const OrganisationUserSettingsTable = pgTable(
     'organisation_user_settings',
@@ -19,3 +20,17 @@ export const OrganisationUserSettingsTable = pgTable(
     },
     table => [primaryKey({ columns: [table.userId, table.organisationId] })]
 ); 
+
+export const organisationUserSettingsRelations = relations(
+    OrganisationUserSettingsTable,
+    ({ one }) => ({
+        user: one(UserTable, {
+            fields: [OrganisationUserSettingsTable.userId],
+            references: [UserTable.id],
+        }),
+        organisation: one(OrganisationTable, {
+            fields: [OrganisationUserSettingsTable.organisationId],
+            references: [OrganisationTable.id],
+        }),
+    })
+);

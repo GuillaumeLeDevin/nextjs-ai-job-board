@@ -1,6 +1,7 @@
 import { boolean, pgTable, varchar } from "drizzle-orm/pg-core";
 import { createdAt, updatedAt } from "../schemaHelpers";
 import { UserTable } from "../schema";
+import { relations } from "drizzle-orm/relations";
 
 export const userNotificationSettingsTable = pgTable("user_notification_settings", {
     userId: varchar()
@@ -11,3 +12,11 @@ export const userNotificationSettingsTable = pgTable("user_notification_settings
     createdAt,
     updatedAt,
 });
+
+export const userNotificationSettingsRelations = relations(userNotificationSettingsTable,
+    ({ one }) => ({
+        user: one(UserTable, {
+            fields: [userNotificationSettingsTable.userId],
+            references: [UserTable.id],
+    }),
+}));
