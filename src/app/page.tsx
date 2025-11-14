@@ -1,10 +1,32 @@
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebarClient } from "./_AppSidebarClient";
+
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <h1 className="text-4xl font-bold">Welcome to the AI Job Search App</h1>
-      <p className="mt-4 text-lg">
-        Start exploring job opportunities powered by AI!
-      </p>
-    </main>
+    <SidebarProvider className="overflow-y-hidden">
+      <AppSidebarClient>
+      <Sidebar collapsible="icon" className="overflow-hidden">
+        <SidebarHeader className="flex-row">
+          <SidebarTrigger />
+          <h1 className="text-xl text-nowrap">GLD Job Search</h1>
+        </SidebarHeader>
+
+        <SidebarContent>
+          {/* Main content goes here */}
+        </SidebarContent>
+
+        <SidebarFooter>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton>test</SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarFooter>
+
+      </Sidebar>
+
+      <main className="flex-1">test</main>
+      </AppSidebarClient>
+    </SidebarProvider>
   );
 }
