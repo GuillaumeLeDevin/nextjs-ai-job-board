@@ -1,5 +1,8 @@
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebarClient } from "./_AppSidebarClient";
+import Link from "next/dist/client/link";
+import { LogInIcon } from "lucide-react";
+import { SignedOut } from "@/services/clerk/components/SignInStatus";
 
 export default function HomePage() {
   return (
@@ -12,13 +15,26 @@ export default function HomePage() {
         </SidebarHeader>
 
         <SidebarContent>
-          {/* Main content goes here */}
+          <SidebarGroup>
+            <SidebarMenu>
+              <SignedOut>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    <Link href="/sign-in">
+                      <LogInIcon />
+                      <span>Log In</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SignedOut>
+            </SidebarMenu>
+          </SidebarGroup>
         </SidebarContent>
 
         <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton>test</SidebarMenuButton>
+              <SidebarMenuButton></SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
