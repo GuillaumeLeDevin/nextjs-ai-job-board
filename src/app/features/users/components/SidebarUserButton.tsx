@@ -14,6 +14,6 @@ async function SidebarUserSuspense() {
   const { userId } = await auth()
 
   return (
-    <SidebarUserButtonClient user={{ email: "kyle@test.com", name: "Kyle Cook" }} />
+    <SidebarUserButtonClient user={{ email: "kyle@test.com", name: "Kyle Cook", imageUrl: "" }} />
   );
 }

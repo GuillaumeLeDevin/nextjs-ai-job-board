@@ -3,6 +3,7 @@ import { AppSidebarClient } from "./_AppSidebarClient";
 import Link from "next/dist/client/link";
 import { LogInIcon } from "lucide-react";
 import { SignedOut } from "@/services/clerk/components/SignInStatus";
+import { SidebarUserButton } from "./features/users/components/SidebarUserButton";
 
 export default function HomePage() {
   return (
@@ -34,7 +35,7 @@ export default function HomePage() {
         <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton></SidebarMenuButton>
+              <SidebarUserButton />
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
