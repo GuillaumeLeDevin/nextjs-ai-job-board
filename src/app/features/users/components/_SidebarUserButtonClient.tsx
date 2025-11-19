@@ -1,10 +1,13 @@
 "use client";
 
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { ChevronsUpDown } from "lucide-react";
+import { SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ChevronsUpDown, LogOut, SettingsIcon, UserIcon } from "lucide-react";
+import Link from "next/link";
+import { SignOutButton } from "@/services/clerk/components/AuthButtons";
+import { useClerk } from "@clerk/shared/react/index";
+
 
 type User = {
     name: string;
@@ -17,7 +20,10 @@ export function SidebarUserButtonClient({
 }: {
      user: User
 }) {
-  const { isMobile } = useIsMobile();
+
+  const { isMobile, setOpenMobile } = useSidebar();
+
+  const { openUserProfile } =  useClerk();
 
   return (
     <DropdownMenu>
@@ -29,7 +35,40 @@ export function SidebarUserButtonClient({
                 <ChevronsUpDown className="ml-auto group-data-[state=collapsed]:hidden" />
             </SidebarMenuButton>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>Hi</DropdownMenuContent>
+        <DropdownMenuContent
+        sideOffset={4}
+        align="center"
+        side={isMobile ? "bottom" : "right"}
+        className="rounded-lg min-w-64 max-w-80">
+            <DropdownMenuLabel className="font-normal p-1">
+                <UserInfo {...user} />
+            </DropdownMenuLabel>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+            onClick={() => {
+                openUserProfile()
+                setOpenMobile(false)
+            }}>
+                <UserIcon className="mr-1" />
+                    Profile
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+                <Link href="/user-settings/notifications">
+                    <SettingsIcon className="mr-1" />
+                    Settings
+                </Link>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+            <SignOutButton>
+                <DropdownMenuItem>
+                    <LogOut className="mr-1" />
+                    Sign Out
+                </DropdownMenuItem>
+            </SignOutButton>
+        </DropdownMenuContent>
     </DropdownMenu>
   )
 }
@@ -43,8 +82,8 @@ function UserInfo({imageUrl, email, name}: User) {
         .join("")
 
     return (
-        <div className="flex items-center gap-2 overflow-hidden">
-            <Avatar className=" size-8">
+        <div className="flex items-center gap-1 overflow-hidden">
+            <Avatar className="rounded-lg size-8">
                 <AvatarImage src={imageUrl} alt={name} />
                 <AvatarFallback className="uppercase bg-primary text-primary-foreground">
                     {nameInitials}

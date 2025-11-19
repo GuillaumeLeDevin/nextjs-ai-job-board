@@ -2,7 +2,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, Si
 import { AppSidebarClient } from "./_AppSidebarClient";
 import Link from "next/dist/client/link";
 import { LogInIcon } from "lucide-react";
-import { SignedOut } from "@/services/clerk/components/SignInStatus";
+import { SignedIn, SignedOut } from "@/services/clerk/components/SignInStatus";
 import { SidebarUserButton } from "./features/users/components/SidebarUserButton";
 
 export default function HomePage() {
@@ -12,7 +12,7 @@ export default function HomePage() {
       <Sidebar collapsible="icon" className="overflow-hidden">
         <SidebarHeader className="flex-row">
           <SidebarTrigger />
-          <h1 className="text-xl text-nowrap">GLD Job Search</h1>
+          <h1 className="text-xl text-nowrap">Best Job Search</h1>
         </SidebarHeader>
 
         <SidebarContent>
@@ -31,15 +31,15 @@ export default function HomePage() {
             </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>
-
-        <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarUserButton />
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-
+        <SignedIn>
+          <SidebarFooter>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarUserButton />
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarFooter>
+        </SignedIn>
       </Sidebar>
 
       <main className="flex-1">test</main>
