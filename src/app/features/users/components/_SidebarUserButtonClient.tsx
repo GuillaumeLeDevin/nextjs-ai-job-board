@@ -2,8 +2,20 @@
 
 import { SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ChevronsUpDown, LogOut, SettingsIcon, UserIcon } from "lucide-react";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import {
+    ChevronsUpDown,
+    LogOut,
+    SettingsIcon,
+    UserIcon
+} from "lucide-react";
 import Link from "next/link";
 import { SignOutButton } from "@/services/clerk/components/AuthButtons";
 import { useClerk } from "@clerk/shared/react/index";
