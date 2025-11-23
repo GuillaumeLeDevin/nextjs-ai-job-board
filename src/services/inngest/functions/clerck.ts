@@ -12,7 +12,7 @@ function verifyWebhook({ raw, headers }: {
     return new Webhook(env.CLERK_WEBHOOK_SECRET)
 }
 
-export const clerCreateUser = inngest.createFunction(
+export const clerkCreateUser = inngest.createFunction(
     {
         id: 'clerk/create-db-user',
         name: "Clerk - Create DB User"
@@ -49,5 +49,77 @@ export const clerCreateUser = inngest.createFunction(
  
         await step.run("create-user-notification-settings", async () => {
             await insertUserNotificationSettings({userId});
+        });
+});
+
+export const clerkUpdateUser = inngest.createFunction(
+    {
+        id: 'clerk/update-db-user',
+        name: "Clerk - Update DB User"
+    }, {
+        event: "clerk/user.updated"
+    },
+    async ({ event, step }) => {
+        await step.run("Verify Webhook", async () => {
+            try {
+                verifyWebhook(event.data)
+            } catch {
+                throw new NonRetriableError("Invalid webhook signature");
+            }
+        });
+
+        const userId = await step.run("update-user", async () => {
+            const userData = event.data.data
+            const email = userData.email_addresses?.find(e => e.id === userData.primary_email_address_id)?.email_address || null;
+            if (!email) {
+                throw new NonRetriableError("No primary email address found");
+            }
+
+            await updateUser({
+                id: userData.id,
+                name: `${userData.first_name} ${userData.last_name}`,
+                imageUrl: userData.image_url,
+                email: email,
+                createdAt: new Date(userData.created_at),
+                updatedAt: new Date(userData.updated_at)
+            })
+
+            return userData.id;
+        });
+});
+
+export const clerkDeleteUser = inngest.createFunction(
+    {
+        id: 'clerk/delete-db-user',
+        name: "Clerk - Delete DB User"
+    }, {
+        event: "clerk/user.deleted"
+    },
+    async ({ event, step }) => {
+        await step.run("Verify Webhook", async () => {
+            try {
+                verifyWebhook(event.data)
+            } catch {
+                throw new NonRetriableError("Invalid webhook signature");
+            }
+        });
+
+        const userId = await step.run("create-user", async () => {
+            const userData = event.data.data
+            const email = userData.email_addresses?.find(e => e.id === userData.primary_email_address_id)?.email_address || null;
+            if (!email) {
+                throw new NonRetriableError("No primary email address found");
+            }
+
+            await deleteUser({
+                id: userData.id,
+                name: `${userData.first_name} ${userData.last_name}`,
+                imageUrl: userData.image_url,
+                email: email,
+                createdAt: new Date(userData.created_at),
+                updatedAt: new Date(userData.updated_at)
+            })
+
+            return userData.id;
         });
 });
