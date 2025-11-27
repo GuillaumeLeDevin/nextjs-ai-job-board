@@ -8,5 +8,8 @@ type Cachetag =
     | "organisationUserSettings";
 
     export function getGlobalTag(tag: Cachetag) {
-        return `global-${tag}`;
+        return `global:${tag}` as const
+    }
+    export function getIdTag(tag: Cachetag, id: string) {
+        return `id:${id}-${tag}` as const
     }
