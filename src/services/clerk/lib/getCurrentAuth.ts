@@ -5,20 +5,20 @@ import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm/sql/expressions/conditions";
 import { cacheTag } from "next/cache";
 
-export async function getCurrentUser({allData = false} = {}) {
-    const { userId } = await auth()
-  
-    return {
-        userId,
-        user: (allData && userId != null) ? await getUser(userId) : undefined
-    }
+export async function getCurrentUser({ allData = false } = {}) {
+  const { userId } = await auth();
+
+  return {
+    userId,
+    user: allData && userId != null ? await getUser(userId) : undefined,
+  };
 }
 
 async function getUser(id: string) {
-    "use cache"
-    cacheTag(getUserIdTag(id));
+  "use cache";
+  cacheTag(getUserIdTag(id));
 
-    return db.query.UserTable.findFirst({
-        where: eq(UserTable.id, id)
-    });
+  return db.query.UserTable.findFirst({
+    where: eq(UserTable.id, id),
+  });
 }
